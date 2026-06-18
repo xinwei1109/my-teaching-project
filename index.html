@@ -107,18 +107,11 @@
                         <span>2. 查詢個別狀態</span>
                     </button>
 
-                    <button @click="currentTab = 'query'" 
-                        :class="currentTab === 'query' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
-                        class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-database text-sm"></i>
-                        <span>3. 查詢資料庫紀錄</span>
-                    </button>
-
                     <button @click="currentTab = 'stats'" 
                         :class="currentTab === 'stats' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
                         class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
                         <i class="fa-solid fa-chart-pie text-sm"></i>
-                        <span>4. 資料庫統計分析</span>
+                        <span>3. 學習數據分析</span>
                     </button>
                 </nav>
 
@@ -170,7 +163,7 @@
                                         <td class="p-4">
                                             <span :class="s.risk === '高' ? 'bg-red-50 text-red-700 border-red-200' : s.risk === '中' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="px-2.5 py-1 rounded-lg text-[11px] font-bold border flex items-center gap-1.5 w-fit">
                                                 <span :class="s.risk === '高' ? 'bg-red-500' : s.risk === '中' ? 'bg-amber-400' : 'bg-emerald-500'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
-                                                {{ s.risk }}風險
+                                                {{ s.risk }}
                                             </span>
                                         </td>
                                         <td class="p-4 text-center font-bold text-gray-600">{{ s.rewatch }} 次</td>
@@ -219,19 +212,6 @@
                         <div class="text-center text-[10px] text-gray-400 font-medium pt-2">- 教室後方門口 (共 60 個智慧觀測方格) -</div>
                     </div>
 
-                    <div v-if="currentTab === 'query'" class="space-y-6">
-                        <div>
-                            <h2 class="text-lg font-bold text-gray-800">📂 查詢資料庫的學生行為紀錄</h2>
-                            <p class="text-xs text-gray-400 mt-1">即時檢索 MongoDB 內的高頻率非結構化日誌 (JSON Logs)</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex gap-4">
-                            <input type="text" placeholder="輸入學號或座位號（如 Seat 1）指令..." class="w-full px-4 py-2 border border-gray-200 rounded-xl text-xs text-gray-700 focus:outline-none focus:border-indigo-500">
-                            <button class="bg-indigo-600 text-white text-xs px-5 py-2 rounded-xl font-bold tracking-wide shrink-0">發送 Query</button>
-                        </div>
-                        <div class="bg-[#1e293b] text-emerald-400 p-6 rounded-2xl font-mono text-[11px] shadow-inner">
-                            <pre>// 成功撈出 10x6 矩陣日誌片段：&#10;{{ JSON.stringify(mockRawLogs, null, 2) }}</pre>
-                        </div>
-                    </div>
 
                     <div v-if="currentTab === 'stats'" class="space-y-6">
                         <h2 class="text-lg font-bold text-gray-800">📈 60人全班級數據核心統計</h2>
@@ -401,12 +381,23 @@
                     isModalOpen.value = true;
                 };
 
-                const mockRawLogs = ref([{ "classroom_matrix": "10x6_Grid", "total_monitored_seats": 60, "status": "active_streaming" }]);
+        
 
                 return {
-                    isLoggedIn, username, password, rememberMe, showPassword, loginError, handleLogin, handleLogout,
-                    currentTab, mockStudents, isModalOpen, modalData, openStudentModal, mockRawLogs
-                };
+    isLoggedIn,
+    username,
+    password,
+    rememberMe,
+    showPassword,
+    loginError,
+    handleLogin,
+    handleLogout,
+    currentTab,
+    mockStudents,
+    isModalOpen,
+    modalData,
+    openStudentModal
+};
             }
         }).mount('#app');
     </script>
