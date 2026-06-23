@@ -1,15 +1,3 @@
-沒問題！我已經直接幫你把 **「響應式網頁設計 (RWD)」** 的設定加進這段程式碼中了。
-
-這次的修改使用了 Tailwind CSS 內建的響應式語法（如 `md:flex-row`、`w-full`、`overflow-x-auto`），解決了手機版面會擠壓破圖的問題：
-
-1. **側邊欄自動排版**：在手機上會自動變成上方選單，在電腦上維持左側邊欄。
-2. **表格水平滾動**：總覽表格在手機上不會被硬擠，而是可以左右滑動查看所有欄位。
-3. **座位表自動縮放**：10×6 的格子在手機上會自動變成一排 3 格或 2 格，電腦上維持一排 6 格。
-4. **彈窗自適應**：手機上的詳細數據也會從橫排自動變成直排，字體不會溢出。
-
-請直接**全部複製以下程式碼**，覆蓋掉你原本的檔案即可：
-
-```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -85,51 +73,86 @@
                 </form>
 
                 <div class="text-center mt-8 pt-4 border-t border-slate-700/40">
-                    <p class="text-[10px] text-slate-500 font-medium">靜宜大學 人工智慧應用學系 數位作品企劃</p>
+                    <p class="text-[10px] text-slate-500 font-medium">靜宜大學 人工智慧應用學系</p>
                 </div>
             </div>
         </div>
 
         <div v-if="isLoggedIn" class="min-h-screen flex flex-col md:flex-row animate-[fadeIn_0.4s_ease-out]">
             
-            <aside class="w-full md:w-64 bg-[#1e293b] text-slate-300 flex flex-col shadow-xl z-10 border-r border-gray-200 shrink-0">
-                <div class="p-5 bg-[#0f172a] flex items-center space-x-3">
-                    <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-md shadow-indigo-600/30">
-                        <i class="fa-solid fa-graduation-cap text-lg"></i>
+            <aside :class="isSidebarExpanded ? 'md:w-64' : 'md:w-[80px]'" 
+                   class="w-full bg-[#1e293b] text-slate-300 flex flex-col shadow-xl z-10 border-r border-gray-200 shrink-0 transition-all duration-300 ease-in-out">
+                
+                <div class="bg-[#0f172a] flex items-center transition-all duration-300 h-[72px]" 
+                     :class="isSidebarExpanded ? 'px-4 justify-between' : 'px-0 justify-center'">
+                    
+                    <div class="flex items-center overflow-hidden" v-show="isSidebarExpanded">
+                        <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-md shadow-indigo-600/30 shrink-0 flex items-center justify-center w-9 h-9">
+                            <i class="fa-solid fa-graduation-cap text-base"></i>
+                        </div>
+                        <div class="ml-3 whitespace-nowrap">
+                            <h1 class="text-white font-extrabold text-sm tracking-wide">HoloLens 評估</h1>
+                            <span class="text-[10px] text-slate-400 font-mono tracking-wider">Teacher Control</span>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="text-white font-extrabold text-sm tracking-wide">HoloLens 評估系統</h1>
-                        <span class="text-[11px] text-slate-400 font-mono tracking-wider">Teacher Control v3.5</span>
-                    </div>
+
+                    <button @click="isSidebarExpanded = !isSidebarExpanded" 
+                            class="hidden md:flex text-slate-400 hover:text-white items-center justify-center rounded-xl hover:bg-slate-800 transition-colors shrink-0"
+                            :class="isSidebarExpanded ? 'w-8 h-8' : 'w-12 h-12 bg-slate-800/50 hover:bg-slate-700'">
+                        <i class="fa-solid text-lg" :class="isSidebarExpanded ? 'fa-angle-left' : 'fa-bars'"></i>
+                    </button>
                 </div>
 
-                <nav class="flex-1 p-4 space-y-2 mt-4 flex flex-col sm:flex-row md:flex-col gap-2 sm:space-y-0 md:space-y-2">
-                    <button @click="currentTab = 'overview'" 
-                        :class="currentTab === 'overview' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
-                        class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-users-viewfinder text-sm shrink-0"></i>
-                        <span>1. 學生狀態總覽</span>
+                <nav class="flex-1 space-y-2 flex flex-col sm:flex-row md:flex-col gap-2 sm:space-y-0 md:space-y-2 overflow-y-auto overflow-x-hidden transition-all duration-300"
+                     :class="isSidebarExpanded ? 'p-3 md:p-4' : 'p-2 md:p-3'">
+                    
+                    <button @click="currentTab = 'overview'" title="學生狀態總覽"
+                        :class="[
+                            currentTab === 'overview' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400',
+                            isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center'
+                        ]"
+                        class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left group">
+                        <i class="fa-solid fa-users-viewfinder shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
+                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">1. 學生狀態總覽</span>
                     </button>
 
-                    <button @click="currentTab = 'single'" 
-                        :class="currentTab === 'single' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
-                        class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-border-all text-sm shrink-0"></i>
-                        <span>2. 查詢個別狀態</span>
+                    <button @click="currentTab = 'single'" title="查詢個別狀態"
+                        :class="[
+                            currentTab === 'single' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400',
+                            isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center'
+                        ]"
+                        class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left">
+                        <i class="fa-solid fa-border-all shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
+                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">2. 查詢個別狀態</span>
                     </button>
 
-                    <button @click="currentTab = 'stats'" 
-                        :class="currentTab === 'stats' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
-                        class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-chart-pie text-sm shrink-0"></i>
-                        <span>3. 學習數據分析</span>
+                    <button @click="currentTab = 'stats'" title="學習數據分析"
+                        :class="[
+                            currentTab === 'stats' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400',
+                            isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center'
+                        ]"
+                        class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left">
+                        <i class="fa-solid fa-chart-pie shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
+                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">3. 學習數據分析</span>
                     </button>
                 </nav>
 
-                <div class="p-4 bg-[#0f172a] text-[11px] flex justify-between items-center text-slate-400 border-t border-slate-800">
-                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-user-tie text-indigo-400"></i> 王岱伊 老師</span>
-                    <button @click="handleLogout" class="text-red-400 hover:text-red-300 font-bold flex items-center gap-1">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> 登出
+                <div class="bg-[#0f172a] text-[11px] border-t border-slate-800 flex transition-all duration-300" 
+                     :class="isSidebarExpanded ? 'p-4 justify-between items-center' : 'p-3 flex-col gap-4 items-center justify-center'">
+                    
+                    <span v-show="isSidebarExpanded" class="flex items-center gap-1.5 whitespace-nowrap">
+                        <i class="fa-solid fa-user-tie text-indigo-400"></i> 王岱伊 老師
+                    </span>
+                    
+                    <div v-show="!isSidebarExpanded" title="王岱伊 老師" class="hidden md:flex items-center justify-center bg-slate-800/50 w-10 h-10 rounded-full border border-slate-700">
+                        <i class="fa-solid fa-user-tie text-indigo-400 text-base"></i>
+                    </div>
+
+                    <button @click="handleLogout" title="登出系統" 
+                            class="text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors font-bold flex items-center justify-center shrink-0 rounded-xl"
+                            :class="isSidebarExpanded ? 'gap-1.5 px-2 py-1' : 'w-10 h-10'">
+                        <i class="fa-solid fa-arrow-right-from-bracket" :class="!isSidebarExpanded ? 'text-lg' : ''"></i> 
+                        <span v-show="isSidebarExpanded" class="whitespace-nowrap block">登出</span>
                     </button>
                 </div>
             </aside>
@@ -137,9 +160,9 @@
             <main class="flex-1 flex flex-col h-full md:h-screen overflow-y-auto">
                 <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm shrink-0">
                     <div class="flex items-center space-x-2 text-[10px] md:text-xs text-gray-400 font-medium">
-                        <span>靜宜大學人工智慧應用學系數位作品</span>
+                        <span>靜宜大學人工智慧應用學系</span>
                         <i class="fa-solid fa-angle-right text-[10px]"></i>
-                        <span class="text-gray-800 font-semibold truncate max-w-[200px] md:max-w-none">10 × 6 班級矩陣（符合企劃書 60 人實驗規模）</span>
+                        <span class="text-gray-800 font-semibold truncate max-w-[200px] md:max-w-none">班級座位表</span>
                     </div>
                     <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold border border-indigo-100 self-start sm:self-auto">
                         MongoDB 實時監控模擬中
@@ -150,7 +173,7 @@
                     
                     <div v-if="currentTab === 'overview'" class="space-y-6">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-800">📊 學生學習狀態總覽 (前 15 筆摘要)</h2>
+                            <h2 class="text-lg font-bold text-gray-800">📊 學生學習狀態總覽</h2>
                             <p class="text-xs text-gray-400 mt-1">此處列出大班級中需要優先關注的學生狀態</p>
                         </div>
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto w-full">
@@ -194,8 +217,8 @@
                     <div v-if="currentTab === 'single'" class="space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
                             <div>
-                                <h2 class="text-lg font-bold text-gray-800">🏫 10 × 6 班級智慧座位表</h2>
-                                <p class="text-xs text-gray-400 mt-1">點擊棋盤格中任意座位方格（共 60 個），即可即時讀取該區數據</p>
+                                <h2 class="text-lg font-bold text-gray-800">🏫 班級座位表</h2>
+                                <p class="text-xs text-gray-400 mt-1">點擊棋盤格中任意座位方格，即可即時讀取該數據</p>
                             </div>
                             <div class="flex flex-wrap gap-2 sm:gap-4 text-[10px] md:text-[11px] bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> 正常</span>
@@ -220,12 +243,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center text-[10px] text-gray-400 font-medium pt-2">- 教室後方門口 (共 60 個智慧觀測方格) -</div>
+                        <div class="text-center text-[10px] text-gray-400 font-medium pt-2">- 教室後方門口 -</div>
                     </div>
 
-
                     <div v-if="currentTab === 'stats'" class="space-y-6">
-                        <h2 class="text-lg font-bold text-gray-800">📈 60人全班級數據核心統計</h2>
+                        <h2 class="text-lg font-bold text-gray-800">📈 全班級數據核心統計</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                             <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
                                 <span class="text-[10px] font-bold text-indigo-600 block uppercase">全班平均影片重播</span>
@@ -309,6 +331,7 @@
                 const showPassword = ref(false);
                 const loginError = ref('');
 
+                const isSidebarExpanded = ref(true); 
                 const currentTab = ref('single'); 
                 const isModalOpen = ref(false);
                 const modalData = ref({});
@@ -401,6 +424,7 @@
                     loginError,
                     handleLogin,
                     handleLogout,
+                    isSidebarExpanded,
                     currentTab,
                     mockStudents,
                     isModalOpen,
@@ -428,5 +452,3 @@
     </style>
 </body>
 </html>
-
-```
