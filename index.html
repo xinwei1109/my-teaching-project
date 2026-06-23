@@ -1,3 +1,15 @@
+沒問題！我已經直接幫你把 **「響應式網頁設計 (RWD)」** 的設定加進這段程式碼中了。
+
+這次的修改使用了 Tailwind CSS 內建的響應式語法（如 `md:flex-row`、`w-full`、`overflow-x-auto`），解決了手機版面會擠壓破圖的問題：
+
+1. **側邊欄自動排版**：在手機上會自動變成上方選單，在電腦上維持左側邊欄。
+2. **表格水平滾動**：總覽表格在手機上不會被硬擠，而是可以左右滑動查看所有欄位。
+3. **座位表自動縮放**：10×6 的格子在手機上會自動變成一排 3 格或 2 格，電腦上維持一排 6 格。
+4. **彈窗自適應**：手機上的詳細數據也會從橫排自動變成直排，字體不會溢出。
+
+請直接**全部複製以下程式碼**，覆蓋掉你原本的檔案即可：
+
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -78,10 +90,9 @@
             </div>
         </div>
 
-
-        <div v-if="isLoggedIn" class="min-h-screen flex animate-[fadeIn_0.4s_ease-out]">
+        <div v-if="isLoggedIn" class="min-h-screen flex flex-col md:flex-row animate-[fadeIn_0.4s_ease-out]">
             
-            <aside class="w-64 bg-[#1e293b] text-slate-300 flex flex-col shadow-xl z-10 border-r border-gray-200 shrink-0">
+            <aside class="w-full md:w-64 bg-[#1e293b] text-slate-300 flex flex-col shadow-xl z-10 border-r border-gray-200 shrink-0">
                 <div class="p-5 bg-[#0f172a] flex items-center space-x-3">
                     <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-md shadow-indigo-600/30">
                         <i class="fa-solid fa-graduation-cap text-lg"></i>
@@ -92,25 +103,25 @@
                     </div>
                 </div>
 
-                <nav class="flex-1 p-4 space-y-2 mt-4">
+                <nav class="flex-1 p-4 space-y-2 mt-4 flex flex-col sm:flex-row md:flex-col gap-2 sm:space-y-0 md:space-y-2">
                     <button @click="currentTab = 'overview'" 
                         :class="currentTab === 'overview' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
                         class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-users-viewfinder text-sm"></i>
-                        <span>1. 呈現學生狀態總覽</span>
+                        <i class="fa-solid fa-users-viewfinder text-sm shrink-0"></i>
+                        <span>1. 學生狀態總覽</span>
                     </button>
 
                     <button @click="currentTab = 'single'" 
                         :class="currentTab === 'single' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
                         class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-border-all text-sm"></i>
+                        <i class="fa-solid fa-border-all text-sm shrink-0"></i>
                         <span>2. 查詢個別狀態</span>
                     </button>
 
                     <button @click="currentTab = 'stats'" 
                         :class="currentTab === 'stats' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400'"
                         class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-chart-pie text-sm"></i>
+                        <i class="fa-solid fa-chart-pie text-sm shrink-0"></i>
                         <span>3. 學習數據分析</span>
                     </button>
                 </nav>
@@ -123,30 +134,30 @@
                 </div>
             </aside>
 
-            <main class="flex-1 flex flex-col overflow-y-auto h-screen">
-                <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center shadow-sm shrink-0">
-                    <div class="flex items-center space-x-2 text-xs text-gray-400 font-medium">
+            <main class="flex-1 flex flex-col h-full md:h-screen overflow-y-auto">
+                <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm shrink-0">
+                    <div class="flex items-center space-x-2 text-[10px] md:text-xs text-gray-400 font-medium">
                         <span>靜宜大學人工智慧應用學系數位作品</span>
                         <i class="fa-solid fa-angle-right text-[10px]"></i>
-                        <span class="text-gray-800 font-semibold">10 × 6 班級矩陣（符合企劃書 60 人實驗規模）</span>
+                        <span class="text-gray-800 font-semibold truncate max-w-[200px] md:max-w-none">10 × 6 班級矩陣（符合企劃書 60 人實驗規模）</span>
                     </div>
-                    <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold border border-indigo-100">
+                    <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold border border-indigo-100 self-start sm:self-auto">
                         MongoDB 實時監控模擬中
                     </div>
                 </header>
 
-                <div class="p-8 max-w-6xl w-full mx-auto space-y-6 flex-1">
+                <div class="p-4 md:p-8 max-w-6xl w-full mx-auto space-y-6 flex-1">
                     
                     <div v-if="currentTab === 'overview'" class="space-y-6">
                         <div>
                             <h2 class="text-lg font-bold text-gray-800">📊 學生學習狀態總覽 (前 15 筆摘要)</h2>
                             <p class="text-xs text-gray-400 mt-1">此處列出大班級中需要優先關注的學生狀態</p>
                         </div>
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                            <table class="w-full text-left border-collapse">
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto w-full">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
                                 <thead>
                                     <tr class="bg-gray-50/70 text-gray-500 text-[11px] uppercase font-bold tracking-wider border-b border-gray-200">
-                                        <th class="p-4 pl-6">座位 / 學生姓名</th>
+                                        <th class="p-4 pl-6 min-w-[150px]">座位 / 學生姓名</th>
                                         <th class="p-4">風險診斷燈號</th>
                                         <th class="p-4 text-center">影片重播次數</th>
                                         <th class="p-4 text-center">進度落後比例</th>
@@ -181,12 +192,12 @@
                     </div>
 
                     <div v-if="currentTab === 'single'" class="space-y-4">
-                        <div class="flex justify-between items-end">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
                             <div>
                                 <h2 class="text-lg font-bold text-gray-800">🏫 10 × 6 班級智慧座位表</h2>
-                                <p class="text-xs text-gray-400 mt-1">點擊棋盤格中任意座位方格（共 60 個），即可即時讀取該區 HoloLens 日誌數據</p>
+                                <p class="text-xs text-gray-400 mt-1">點擊棋盤格中任意座位方格（共 60 個），即可即時讀取該區數據</p>
                             </div>
-                            <div class="flex gap-4 text-[11px] bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
+                            <div class="flex flex-wrap gap-2 sm:gap-4 text-[10px] md:text-[11px] bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> 正常</span>
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-amber-400"></span> 中風險</span>
                                 <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-red-500"></span> 高風險</span>
@@ -197,7 +208,7 @@
                             【前 方 講 台】
                         </div>
 
-                        <div class="grid grid-cols-6 gap-3 max-w-4xl mx-auto pt-2">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 max-w-4xl mx-auto pt-2">
                             <div v-for="s in mockStudents" :key="s.seat" @click="openStudentModal(s)"
                                 :class="s.risk === '高' ? 'bg-red-50 border-red-300 hover:bg-red-100 hover:border-red-400' : s.risk === '中' ? 'bg-amber-50 border-amber-300 hover:bg-amber-100 hover:border-amber-400' : 'bg-emerald-50 border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400'"
                                 class="aspect-[4/3.2] border rounded-xl flex flex-col justify-between p-2 cursor-pointer shadow-sm transition-all hover:scale-105 select-none text-center">
@@ -215,7 +226,7 @@
 
                     <div v-if="currentTab === 'stats'" class="space-y-6">
                         <h2 class="text-lg font-bold text-gray-800">📈 60人全班級數據核心統計</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                             <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
                                 <span class="text-[10px] font-bold text-indigo-600 block uppercase">全班平均影片重播</span>
                                 <span class="text-3xl font-black text-gray-800 font-mono block mt-2">4.1 <span class="text-xs font-normal text-gray-400">次 / 人</span></span>
@@ -236,24 +247,24 @@
 
             <div v-if="isModalOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                 <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-gray-100 overflow-hidden flex flex-col max-h-[90vh]">
-                    <div class="bg-gray-50 px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                    <div class="bg-gray-50 px-4 md:px-6 py-4 md:py-5 border-b border-gray-100 flex justify-between items-start md:items-center">
                         <div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
                                 <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-lg">{{ modalData.seat }}</span>
-                                <h3 class="font-extrabold text-lg text-gray-800">{{ modalData.name }} 學習狀態模型</h3>
+                                <h3 class="font-extrabold text-base md:text-lg text-gray-800">{{ modalData.name }} 學習狀態模型</h3>
                             </div>
-                            <p class="text-[11px] text-gray-400 mt-0.5">學號: {{ modalData.id }} | 靜宜大學人工智慧應用學系</p>
+                            <p class="text-[10px] md:text-[11px] text-gray-400 mt-1">學號: {{ modalData.id }} | 靜宜大學人工智慧應用學系</p>
                         </div>
                         <button @click="isModalOpen = false" class="text-gray-400 hover:text-gray-600 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
                     </div>
 
-                    <div class="p-6 space-y-6 overflow-y-auto flex-1">
-                        <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="p-4 md:p-6 space-y-4 md:space-y-6 overflow-y-auto flex-1">
+                        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
                             <span class="text-xs font-medium text-gray-500">當前風險診斷結果：</span>
-                            <span :class="modalData.risk === '高' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="text-xs font-bold px-3 py-1 rounded-lg border">● {{ modalData.risk }}風險狀態</span>
+                            <span :class="modalData.risk === '高' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="text-xs font-bold px-3 py-1 rounded-lg border w-fit">● {{ modalData.risk }}風險狀態</span>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                             <div class="bg-gray-50/80 p-3 rounded-xl text-center">
                                 <span class="text-[10px] text-gray-400 block mb-1">影片重播</span>
                                 <span class="text-lg font-black text-indigo-600 font-mono">{{ modalData.rewatch }} 次</span>
@@ -381,23 +392,21 @@
                     isModalOpen.value = true;
                 };
 
-        
-
                 return {
-    isLoggedIn,
-    username,
-    password,
-    rememberMe,
-    showPassword,
-    loginError,
-    handleLogin,
-    handleLogout,
-    currentTab,
-    mockStudents,
-    isModalOpen,
-    modalData,
-    openStudentModal
-};
+                    isLoggedIn,
+                    username,
+                    password,
+                    rememberMe,
+                    showPassword,
+                    loginError,
+                    handleLogin,
+                    handleLogout,
+                    currentTab,
+                    mockStudents,
+                    isModalOpen,
+                    modalData,
+                    openStudentModal
+                };
             }
         }).mount('#app');
     </script>
@@ -419,3 +428,5 @@
     </style>
 </body>
 </html>
+
+```
