@@ -12,19 +12,18 @@
 
     <div id="app" class="min-h-screen">
         
+        <!-- 登入畫面 -->
         <div v-if="!isLoggedIn" class="min-h-screen flex items-center justify-center bg-[#0f172a] relative overflow-hidden px-4">
-            
             <div class="absolute w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-[120px] top-[-10%] left-[-10%]"></div>
             <div class="absolute w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[100px] bottom-[-10%] right-[-10%]"></div>
 
             <div class="bg-[#1e293b]/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-slate-700/50 max-w-md w-full z-10 transition-all duration-300">
-                
                 <div class="text-center mb-8">
                     <div class="inline-block bg-indigo-600 p-3.5 rounded-2xl text-white shadow-xl shadow-indigo-600/30 mb-4 animate-bounce">
                         <i class="fa-solid fa-graduation-cap text-2xl"></i>
                     </div>
                     <h2 class="text-white text-xl font-extrabold tracking-wide">HoloLens 課堂學習風險評估系統</h2>
-                    <p class="text-slate-400 text-xs mt-1.5 font-medium tracking-wider uppercase">Teacher Control Panel v3.5</p>
+                    <p class="text-slate-400 text-xs mt-1.5 font-medium tracking-wider uppercase">Teacher Control Panel v4.1</p>
                 </div>
 
                 <div v-if="loginError" class="mb-4 bg-red-500/10 border border-red-500/30 text-red-400 text-xs p-3.5 rounded-xl flex items-center gap-2 animate-headShake">
@@ -71,21 +70,18 @@
                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
                     </button>
                 </form>
-
-                <div class="text-center mt-8 pt-4 border-t border-slate-700/40">
-                    <p class="text-[10px] text-slate-500 font-medium">靜宜大學 人工智慧應用學系</p>
-                </div>
             </div>
         </div>
 
+        <!-- 主系統畫面 -->
         <div v-if="isLoggedIn" class="min-h-screen flex flex-col md:flex-row animate-[fadeIn_0.4s_ease-out]">
             
-            <aside :class="isSidebarExpanded ? 'md:w-64' : 'md:w-[80px]'" 
-                   class="w-full bg-[#1e293b] text-slate-300 flex flex-col shadow-xl z-10 border-r border-gray-200 shrink-0 transition-all duration-300 ease-in-out">
+            <!-- 側邊欄 -->
+            <aside :class="isSidebarExpanded ? 'md:w-[260px]' : 'md:w-[80px]'" 
+                   class="w-full bg-[#1e293b] text-slate-300 flex flex-col shadow-xl z-10 border-r border-gray-200 shrink-0 transition-all duration-300 ease-in-out print:hidden">
                 
                 <div class="bg-[#0f172a] flex items-center transition-all duration-300 h-[72px]" 
                      :class="isSidebarExpanded ? 'px-4 justify-between' : 'px-0 justify-center'">
-                    
                     <div class="flex items-center overflow-hidden" v-show="isSidebarExpanded">
                         <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-md shadow-indigo-600/30 shrink-0 flex items-center justify-center w-9 h-9">
                             <i class="fa-solid fa-graduation-cap text-base"></i>
@@ -95,7 +91,6 @@
                             <span class="text-[10px] text-slate-400 font-mono tracking-wider">Teacher Control</span>
                         </div>
                     </div>
-
                     <button @click="isSidebarExpanded = !isSidebarExpanded" 
                             class="hidden md:flex text-slate-400 hover:text-white items-center justify-center rounded-xl hover:bg-slate-800 transition-colors shrink-0"
                             :class="isSidebarExpanded ? 'w-8 h-8' : 'w-12 h-12 bg-slate-800/50 hover:bg-slate-700'">
@@ -107,47 +102,39 @@
                      :class="isSidebarExpanded ? 'p-3 md:p-4' : 'p-2 md:p-3'">
                     
                     <button @click="currentTab = 'overview'" title="學生狀態總覽"
-                        :class="[
-                            currentTab === 'overview' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400',
-                            isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center'
-                        ]"
-                        class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left group">
+                        :class="[currentTab === 'overview' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400', isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center']"
+                        class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left">
                         <i class="fa-solid fa-users-viewfinder shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
                         <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">1. 學生狀態總覽</span>
                     </button>
 
-                    <button @click="currentTab = 'single'" title="查詢個別狀態"
-                        :class="[
-                            currentTab === 'single' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400',
-                            isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center'
-                        ]"
+                    <button @click="currentTab = 'single'" title="教室座位監控"
+                        :class="[currentTab === 'single' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400', isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center']"
                         class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left">
                         <i class="fa-solid fa-border-all shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
-                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">2. 查詢個別狀態</span>
+                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">2. 教室座位監控</span>
                     </button>
 
-                    <button @click="currentTab = 'stats'" title="學習數據分析"
-                        :class="[
-                            currentTab === 'stats' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400',
-                            isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center'
-                        ]"
+                    <button @click="currentTab = 'videos'" title="影片教材管理"
+                        :class="[currentTab === 'videos' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400', isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center']"
                         class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left">
-                        <i class="fa-solid fa-chart-pie shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
-                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">3. 學習數據分析</span>
+                        <i class="fa-solid fa-photo-film shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
+                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">3. 影片教材管理</span>
+                    </button>
+
+                    <button @click="currentTab = 'settings'" title="管理與系統設定"
+                        :class="[currentTab === 'settings' ? 'bg-indigo-600 text-white font-bold shadow-lg shadow-indigo-600/20' : 'hover:bg-slate-800 hover:text-white text-slate-400', isSidebarExpanded ? 'px-4 justify-start' : 'px-0 justify-center']"
+                        class="w-full flex items-center py-3.5 rounded-xl text-xs font-medium transition-all text-left">
+                        <i class="fa-solid fa-sliders shrink-0" :class="isSidebarExpanded ? 'text-sm' : 'text-lg'"></i>
+                        <span v-show="isSidebarExpanded" class="ml-3 whitespace-nowrap block">4. 管理與系統設定</span>
                     </button>
                 </nav>
 
                 <div class="bg-[#0f172a] text-[11px] border-t border-slate-800 flex transition-all duration-300" 
                      :class="isSidebarExpanded ? 'p-4 justify-between items-center' : 'p-3 flex-col gap-4 items-center justify-center'">
-                    
                     <span v-show="isSidebarExpanded" class="flex items-center gap-1.5 whitespace-nowrap">
                         <i class="fa-solid fa-user-tie text-indigo-400"></i> 王岱伊 老師
                     </span>
-                    
-                    <div v-show="!isSidebarExpanded" title="王岱伊 老師" class="hidden md:flex items-center justify-center bg-slate-800/50 w-10 h-10 rounded-full border border-slate-700">
-                        <i class="fa-solid fa-user-tie text-indigo-400 text-base"></i>
-                    </div>
-
                     <button @click="handleLogout" title="登出系統" 
                             class="text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors font-bold flex items-center justify-center shrink-0 rounded-xl"
                             :class="isSidebarExpanded ? 'gap-1.5 px-2 py-1' : 'w-10 h-10'">
@@ -157,24 +144,27 @@
                 </div>
             </aside>
 
-            <main class="flex-1 flex flex-col h-full md:h-screen overflow-y-auto">
-                <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm shrink-0">
+            <!-- 右側主內容區 -->
+            <main class="flex-1 flex flex-col h-full md:h-screen overflow-y-auto print:overflow-visible">
+                <header class="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm shrink-0 print:hidden">
                     <div class="flex items-center space-x-2 text-[10px] md:text-xs text-gray-400 font-medium">
                         <span>靜宜大學人工智慧應用學系</span>
                         <i class="fa-solid fa-angle-right text-[10px]"></i>
-                        <span class="text-gray-800 font-semibold truncate max-w-[200px] md:max-w-none">班級座位表</span>
+                        <span class="text-gray-800 font-semibold truncate max-w-[200px] md:max-w-none">{{ pageTitle }}</span>
                     </div>
-                    <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold border border-indigo-100 self-start sm:self-auto">
-                        MongoDB 實時監控模擬中
+                    <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg text-xs font-semibold border border-indigo-100 self-start sm:self-auto flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500 animate-ping"></span>
+                        系統實時監控中
                     </div>
                 </header>
 
-                <div class="p-4 md:p-8 max-w-6xl w-full mx-auto space-y-6 flex-1">
+                <div class="p-4 md:p-8 max-w-6xl w-full mx-auto space-y-6 flex-1 print:p-0 print:max-w-none">
                     
-                    <div v-if="currentTab === 'overview'" class="space-y-6">
+                    <!-- Tab 1: 總覽 (整合完整名冊) -->
+                    <div v-if="currentTab === 'overview'" class="space-y-6 animate-[fadeIn_0.3s_ease-out]">
                         <div>
                             <h2 class="text-lg font-bold text-gray-800">📊 學生學習狀態總覽</h2>
-                            <p class="text-xs text-gray-400 mt-1">此處列出大班級中需要優先關注的學生狀態</p>
+                            <p class="text-xs text-gray-400 mt-1">此處列出名冊內所有學生的即時動態與安排狀態</p>
                         </div>
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-x-auto w-full">
                             <table class="w-full text-left border-collapse whitespace-nowrap">
@@ -189,41 +179,54 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100 text-xs">
-                                    <tr v-for="s in mockStudents.slice(0, 15)" :key="s.seat" class="hover:bg-gray-50/50 transition-colors">
+                                    <tr v-for="s in classRoster" :key="s.id" class="hover:bg-gray-50/50 transition-colors">
                                         <td class="p-4 pl-6 font-semibold text-gray-700">
-                                            <span class="text-xs font-mono text-indigo-600 mr-1 bg-indigo-50 px-1.5 py-0.5 rounded">{{ s.seat }}</span>
+                                            <span :class="getStudentSeat(s.id) === '未安排' ? 'bg-gray-100 text-gray-400' : 'bg-indigo-50 text-indigo-600'" class="text-[11px] font-mono mr-1.5 px-1.5 py-0.5 rounded font-bold">
+                                                {{ getStudentSeat(s.id) }}
+                                            </span>
                                             {{ s.name }} <span class="text-[11px] text-gray-400 font-normal ml-1">({{ s.id }})</span>
                                         </td>
                                         <td class="p-4">
-                                            <span :class="s.risk === '高' ? 'bg-red-50 text-red-700 border-red-200' : s.risk === '中' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="px-2.5 py-1 rounded-lg text-[11px] font-bold border flex items-center gap-1.5 w-fit">
-                                                <span :class="s.risk === '高' ? 'bg-red-500' : s.risk === '中' ? 'bg-amber-400' : 'bg-emerald-500'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
-                                                {{ s.risk }}
+                                            <span :class="getStudentMetric(s.id, 'risk') === '高' ? 'bg-red-50 text-red-700 border-red-200' : getStudentMetric(s.id, 'risk') === '中' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="px-2.5 py-1 rounded-lg text-[11px] font-bold border flex items-center gap-1.5 w-fit">
+                                                <span :class="getStudentMetric(s.id, 'risk') === '高' ? 'bg-red-500' : getStudentMetric(s.id, 'risk') === '中' ? 'bg-amber-400' : 'bg-emerald-500'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
+                                                {{ getStudentMetric(s.id, 'risk') }}
                                             </span>
                                         </td>
-                                        <td class="p-4 text-center font-bold text-gray-600">{{ s.rewatch }} 次</td>
-                                        <td class="p-4 text-center font-bold" :class="s.lag >= 30 ? 'text-red-500' : 'text-gray-600'">{{ s.lag }}%</td>
-                                        <td class="p-4 text-center font-bold" :class="s.errors >= 3 ? 'text-red-500' : 'text-gray-400'">{{ s.errors }} 次</td>
+                                        <td class="p-4 text-center font-bold text-gray-600">{{ getStudentMetric(s.id, 'rewatch') }} 次</td>
+                                        <td class="p-4 text-center font-bold" :class="getStudentMetric(s.id, 'lag') >= 30 ? 'text-red-500' : 'text-gray-600'">{{ getStudentMetric(s.id, 'lag') }}%</td>
+                                        <td class="p-4 text-center font-bold" :class="getStudentMetric(s.id, 'errors') >= 3 ? 'text-red-500' : 'text-gray-400'">{{ getStudentMetric(s.id, 'errors') }} 次</td>
                                         <td class="p-4 text-center">
-                                            <button @click="openStudentModal(s)" class="bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 border border-gray-200 text-gray-600 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all">
+                                            <button @click="openStudentModal(s, false)" class="bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 border border-gray-200 text-gray-600 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold transition-all">
                                                 查看彈窗
                                             </button>
                                         </td>
+                                    </tr>
+                                    <tr v-if="classRoster.length === 0">
+                                        <td colspan="6" class="p-8 text-center text-gray-400 text-xs">目前無學生名冊，請至系統設定區進行批次匯入</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div v-if="currentTab === 'single'" class="space-y-4">
+                    <!-- Tab 2: 教室監控 -->
+                    <div v-if="currentTab === 'single'" class="space-y-4 animate-[fadeIn_0.3s_ease-out]">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
                             <div>
-                                <h2 class="text-lg font-bold text-gray-800">🏫 班級座位表</h2>
-                                <p class="text-xs text-gray-400 mt-1">點擊棋盤格中任意座位方格，即可即時讀取該數據</p>
+                                <h2 class="text-lg font-bold text-gray-800">🏫 班級座位表監控</h2>
+                                <p class="text-[11px] text-gray-500 mt-1 bg-blue-50 text-blue-700 px-2.5 py-1 rounded-md inline-block">
+                                    <i class="fa-solid fa-circle-info"></i> 點擊灰色空位可從名單中指派學生，點擊已入座可查看狀態或解除綁定。
+                                </p>
                             </div>
-                            <div class="flex flex-wrap gap-2 sm:gap-4 text-[10px] md:text-[11px] bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> 正常</span>
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-amber-400"></span> 中風險</span>
-                                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-red-500"></span> 高風險</span>
+                            <div class="flex items-center gap-3">
+                                <button @click="clearAllSeats" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-xl border border-red-200 text-xs font-bold transition-colors shadow-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-trash-can"></i> 一鍵清除所有座位
+                                </button>
+                                <div class="flex flex-wrap gap-2 text-[10px] md:text-[11px] bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500"></span> 正常</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-amber-400"></span> 中風險</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-red-500"></span> 高風險</span>
+                                </div>
                             </div>
                         </div>
 
@@ -231,48 +234,154 @@
                             【前 方 講 台】
                         </div>
 
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 max-w-4xl mx-auto pt-2">
-                            <div v-for="s in mockStudents" :key="s.seat" @click="openStudentModal(s)"
-                                :class="s.risk === '高' ? 'bg-red-50 border-red-300 hover:bg-red-100 hover:border-red-400' : s.risk === '中' ? 'bg-amber-50 border-amber-300 hover:bg-amber-100 hover:border-amber-400' : 'bg-emerald-50 border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400'"
-                                class="aspect-[4/3.2] border rounded-xl flex flex-col justify-between p-2 cursor-pointer shadow-sm transition-all hover:scale-105 select-none text-center">
-                                <div class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-tight">{{ s.seat }}</div>
-                                <div class="text-xs font-bold text-gray-800 tracking-wide truncate px-1">{{ s.name }}</div>
-                                <div class="flex justify-center items-center gap-1 text-[9px] font-semibold">
-                                    <span :class="s.risk === '高' ? 'bg-red-500 animate-pulse' : s.risk === '慢' || s.risk === '中' ? 'bg-amber-400' : 'bg-emerald-500'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
-                                    <span :class="s.risk === '高' ? 'text-red-700' : s.risk === '中' ? 'text-amber-700' : 'text-emerald-700'">{{ s.risk }}</span>
+                        <div class="overflow-x-auto pb-4">
+                            <div :style="{ gridTemplateColumns: `repeat(${seatingCols}, minmax(70px, 1fr))` }" class="grid gap-1.5 sm:gap-2 mx-auto pt-2 min-w-full">
+                                <div v-for="s in mockStudents" :key="s.seat" @click="openStudentModal(s, true)"
+                                    :class="!s.name ? 'opacity-60 bg-gray-50 border-dashed border-gray-300 hover:bg-indigo-50 hover:border-indigo-400 hover:opacity-100' : s.risk === '高' ? 'bg-red-50 border-red-300 hover:bg-red-100 hover:border-red-400' : s.risk === '中' ? 'bg-amber-50 border-amber-300 hover:bg-amber-100 hover:border-amber-400' : 'bg-emerald-50 border-emerald-300 hover:bg-emerald-100 hover:border-emerald-400'"
+                                    class="aspect-[4/3.2] border rounded-xl flex flex-col justify-between p-2 cursor-pointer shadow-sm transition-all hover:scale-105 select-none text-center">
+                                    
+                                    <div class="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-tight">{{ s.seat }}</div>
+                                    
+                                    <template v-if="s.name">
+                                        <div class="text-xs font-bold text-gray-800 tracking-wide truncate px-1">{{ s.name }}</div>
+                                        <div class="flex justify-center items-center gap-1 text-[9px] font-semibold">
+                                            <span :class="s.risk === '高' ? 'bg-red-500 animate-pulse' : s.risk === '中' ? 'bg-amber-400' : 'bg-emerald-500'" class="w-1.5 h-1.5 rounded-full inline-block"></span>
+                                            <span :class="s.risk === '高' ? 'text-red-700' : s.risk === '中' ? 'text-amber-700' : 'text-emerald-700'">{{ s.risk }}</span>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <div class="flex flex-col items-center justify-center flex-1 text-gray-400 group">
+                                            <i class="fa-solid fa-plus text-xs mb-0.5 group-hover:text-indigo-500 transition-colors"></i>
+                                            <span class="text-[9px] group-hover:text-indigo-600 font-medium">點擊指派</span>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
                         <div class="text-center text-[10px] text-gray-400 font-medium pt-2">- 教室後方門口 -</div>
                     </div>
 
-                    <div v-if="currentTab === 'stats'" class="space-y-6">
-                        <h2 class="text-lg font-bold text-gray-800">📈 全班級數據核心統計</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
-                                <span class="text-[10px] font-bold text-indigo-600 block uppercase">全班平均影片重播</span>
-                                <span class="text-3xl font-black text-gray-800 font-mono block mt-2">4.1 <span class="text-xs font-normal text-gray-400">次 / 人</span></span>
+                    <!-- Tab 3: 影片管理 -->
+                    <div v-if="currentTab === 'videos'" class="space-y-6 animate-[fadeIn_0.3s_ease-out]">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">📽️ 影片與教材管理</h2>
+                                <p class="text-xs text-gray-400 mt-1">管理推播至學生 HoloLens 端之學習影片</p>
                             </div>
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
-                                <span class="text-[10px] font-bold text-red-500 block uppercase">當前觸發高風險人數</span>
-                                <span class="text-3xl font-black text-gray-800 font-mono block mt-2">9 <span class="text-xs font-normal text-gray-400">人 / 60人</span></span>
+                            <button @click="showAddVideoModal = true" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> 新增影片
+                            </button>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden w-full">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr class="bg-gray-50/70 text-gray-500 text-[11px] uppercase font-bold tracking-wider border-b border-gray-200">
+                                        <th class="p-4 pl-6 w-12">狀態</th>
+                                        <th class="p-4">影片標題</th>
+                                        <th class="p-4">來源/格式</th>
+                                        <th class="p-4">時長</th>
+                                        <th class="p-4">上傳日期</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100 text-xs">
+                                    <tr v-for="v in videoList" :key="v.id" class="hover:bg-gray-50/50 transition-colors">
+                                        <td class="p-4 pl-6">
+                                            <span class="w-2.5 h-2.5 rounded-full inline-block" :class="v.active ? 'bg-emerald-500' : 'bg-gray-300'"></span>
+                                        </td>
+                                        <td class="p-4 font-bold text-gray-700">{{ v.title }}</td>
+                                        <td class="p-4 text-gray-500">
+                                            <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] font-mono">
+                                                <i :class="v.type === 'YouTube' ? 'fa-brands fa-youtube text-red-500' : 'fa-solid fa-file-video text-indigo-500'"></i> {{ v.type }}
+                                            </span>
+                                        </td>
+                                        <td class="p-4 text-gray-500">{{ v.duration }}</td>
+                                        <td class="p-4 text-gray-500">{{ v.date }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: 管理與設定 -->
+                    <div v-if="currentTab === 'settings'" class="space-y-8 animate-[fadeIn_0.3s_ease-out]">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800">⚙️ 系統管理與進階設定</h2>
+                            <p class="text-xs text-gray-400 mt-1">自訂教室座位配置、匯入名單與產生綁定 QR Code</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            
+                            <!-- 區塊 1: 教室配置 -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-border-all text-indigo-500"></i> (1) 教室座位表配置
+                                </h3>
+                                <div class="space-y-4">
+                                    <div class="flex gap-4">
+                                        <div class="flex-1">
+                                            <label class="block text-xs text-gray-500 font-bold mb-1">橫向列數 (行, Cols)</label>
+                                            <input type="number" v-model.number="tempCols" min="2" max="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                                        </div>
+                                        <div class="flex-1">
+                                            <label class="block text-xs text-gray-500 font-bold mb-1">直向排數 (列, Rows)</label>
+                                            <input type="number" v-model.number="tempRows" min="2" max="50" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <div class="text-xs text-indigo-600 bg-indigo-50 p-2 rounded-lg flex items-center gap-2">
+                                        <i class="fa-solid fa-calculator"></i> 預估總座位數：{{ tempCols * tempRows }} 席
+                                    </div>
+                                    <button @click="applySeatingConfig" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold py-2.5 rounded-lg transition-colors">
+                                        套用並重製座位表
+                                    </button>
+                                </div>
                             </div>
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
-                                <span class="text-[10px] font-bold text-amber-500 block uppercase">平均答題錯誤率</span>
-                                <span class="text-3xl font-black text-gray-800 font-mono block mt-2">22.8 <span class="text-xs font-normal text-gray-400">%</span></span>
+
+                            <!-- 區塊 2: 批次匯入名單 (優化為學號與姓名) -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-import text-indigo-500"></i> (2) 批次匯入學生名單
+                                </h3>
+                                <p class="text-[11px] text-gray-500 mb-2">請依照 <code>學號,姓名</code> 格式輸入（每行一位學生）</p>
+                                <textarea v-model="importText" rows="5" placeholder="411313583,黃冠誠&#10;411313606,楊芯瑋&#10;411314999,新學生名稱" class="w-full p-3 border border-gray-300 rounded-xl text-sm font-mono focus:outline-none focus:border-indigo-500 mb-3"></textarea>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[11px] text-emerald-600 font-bold flex items-center gap-1" v-if="importSuccess">
+                                        <i class="fa-solid fa-check-circle"></i> 成功加入全班名冊與選單池！
+                                    </span>
+                                    <span v-else></span>
+                                    <button @click="processImport" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-xs font-bold transition-colors shadow-sm">
+                                        執行匯入
+                                    </button>
+                                </div>
                             </div>
+
+                            <!-- 區塊 3: QR Code 產生器 -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 lg:col-span-2">
+                                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-qrcode text-indigo-500"></i> (3) 產生與座位表對應的 QR Code
+                                </h3>
+                                <p class="text-xs text-gray-500 mb-4 leading-relaxed">
+                                    系統會根據您目前設定的教室大小 <strong class="text-indigo-600">{{ seatingCols }} 行 × {{ seatingRows }} 列</strong>，
+                                    自動產生 <strong>{{ seatingCols * seatingRows }}</strong> 張對應的定位 QR Code，且列印排版將完全對應座位表結構。
+                                </p>
+                                <button @click="showQRModal = true" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold py-3 rounded-xl transition-colors shadow flex justify-center items-center gap-2">
+                                    <i class="fa-solid fa-print"></i> 產生預覽列印版面 (共 {{ seatingCols * seatingRows }} 張)
+                                </button>
+                            </div>
+
                         </div>
                     </div>
 
                 </div>
             </main>
 
+            <!-- 學生狀態詳細彈窗 -->
             <div v-if="isModalOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-gray-100 overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full border border-gray-100 overflow-hidden flex flex-col max-h-[90vh] animate-[fadeIn_0.2s_ease-out]">
                     <div class="bg-gray-50 px-4 md:px-6 py-4 md:py-5 border-b border-gray-100 flex justify-between items-start md:items-center">
                         <div>
                             <div class="flex flex-wrap items-center gap-2">
-                                <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-lg">{{ modalData.seat }}</span>
+                                <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-lg">{{ modalData.seat || '未安排' }}</span>
                                 <h3 class="font-extrabold text-base md:text-lg text-gray-800">{{ modalData.name }} 學習狀態模型</h3>
                             </div>
                             <p class="text-[10px] md:text-[11px] text-gray-400 mt-1">學號: {{ modalData.id }} | 靜宜大學人工智慧應用學系</p>
@@ -283,7 +392,7 @@
                     <div class="p-4 md:p-6 space-y-4 md:space-y-6 overflow-y-auto flex-1">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
                             <span class="text-xs font-medium text-gray-500">當前風險診斷結果：</span>
-                            <span :class="modalData.risk === '高' ? 'bg-red-50 text-red-700 border-red-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="text-xs font-bold px-3 py-1 rounded-lg border w-fit">● {{ modalData.risk }}風險狀態</span>
+                            <span :class="modalData.risk === '高' ? 'bg-red-50 text-red-700 border-red-200' : modalData.risk === '中' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'" class="text-xs font-bold px-3 py-1 rounded-lg border w-fit">● {{ modalData.risk }}風險狀態</span>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
@@ -293,143 +402,357 @@
                             </div>
                             <div class="bg-gray-50/80 p-3 rounded-xl text-center">
                                 <span class="text-[10px] text-gray-400 block mb-1">進度落後</span>
-                                <span class="text-lg font-black text-red-500 font-mono">{{ modalData.lag }} %</span>
+                                <span class="text-lg font-black" :class="modalData.lag > 20 ? 'text-red-500' : 'text-emerald-500'" class="font-mono">{{ modalData.lag }} %</span>
                             </div>
                             <div class="bg-gray-50/80 p-3 rounded-xl text-center">
                                 <span class="text-[10px] text-gray-400 block mb-1">測驗錯誤</span>
                                 <span class="text-lg font-black text-amber-500 font-mono">{{ modalData.errors }} 次</span>
                             </div>
                         </div>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-between items-center">
+                        <!-- 當有實際綁定座位時才顯示解除按鈕 -->
+                        <button v-if="modalData.seat && modalData.seat !== '未安排'" @click="unassignSeat(modalData.seat)" class="text-red-500 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl text-xs font-bold transition-colors">
+                            <i class="fa-solid fa-user-minus"></i> 解除此座位綁定
+                        </button>
+                        <div v-else></div>
+                        <button @click="isModalOpen = false" class="bg-slate-800 text-white text-xs px-5 py-2 rounded-xl font-bold hover:bg-slate-900 transition-colors">關閉視窗</button>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 text-xs text-gray-600 flex items-start gap-2.5">
-                            <i class="fa-solid fa-robot text-indigo-500 text-sm mt-0.5"></i>
-                            <div>
-                                <strong class="text-indigo-600">系統分析提示：</strong> 
-                                <span v-if="modalData.risk === '高'">此方格座位學生指標異常，重播頻率與測驗錯誤皆超過安全閥值，建議教師在走動式教學時前往該座位關注。</span>
-                                <span v-else>該座位目前操作進度非常流暢，各項指標皆在綠色常態範圍內。</span>
-                            </div>
+            <!-- 空位分配彈窗 (下拉選單聯動未入座名單) -->
+            <div v-if="showAssignModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full border border-gray-100 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+                    <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center">
+                        <h3 class="font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chair"></i> 指派入座: {{ assignSeatSelect }}
+                        </h3>
+                        <button @click="showAssignModal = false" class="text-white/70 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div v-if="availableStudents.length > 0">
+                            <label class="block text-xs text-gray-500 font-bold mb-2">請從尚未安排座位的名單中選擇：</label>
+                            <select v-model="selectedRosterId" class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 bg-white">
+                                <option value="">-- 點此選擇學生 --</option>
+                                <option v-for="stu in availableStudents" :key="stu.id" :value="stu.id">
+                                    {{ stu.name }} ({{ stu.id }})
+                                </option>
+                            </select>
+                        </div>
+                        <div v-else class="bg-amber-50 text-amber-600 text-xs p-3 rounded-lg border border-amber-200">
+                            目前名冊內的學生皆已安排座位，無可選名單。
+                        </div>
+
+                        <div class="pt-2">
+                            <button @click="assignFromRoster" :disabled="!selectedRosterId" class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-2.5 rounded-xl transition-all shadow-md text-sm">
+                                確定指派
+                            </button>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex justify-end">
-                        <button @click="isModalOpen = false" class="bg-indigo-600 text-white text-xs px-4 py-2 rounded-xl font-bold hover:bg-indigo-700">關閉視窗</button>
+                </div>
+            </div>
+
+            <!-- 新增影片彈窗 -->
+            <div v-if="showAddVideoModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full border border-gray-100 overflow-hidden flex flex-col animate-[fadeIn_0.2s_ease-out]">
+                    <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-video text-indigo-500"></i> 新增學習教材影片
+                        </h3>
+                        <button @click="showAddVideoModal = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex gap-2 bg-gray-100 p-1 rounded-lg">
+                            <button @click="videoUploadType = 'local'" :class="videoUploadType === 'local' ? 'bg-white shadow text-indigo-600' : 'text-gray-500 hover:text-gray-700'" class="flex-1 py-1.5 text-xs font-bold rounded-md transition-all">本機檔案上傳</button>
+                            <button @click="videoUploadType === 'youtube' ? 'bg-white shadow text-red-600' : 'text-gray-500 hover:text-gray-700'" @click="videoUploadType = 'youtube'" class="flex-1 py-1.5 text-xs font-bold rounded-md transition-all">YouTube 連結</button>
+                        </div>
+
+                        <div v-if="videoUploadType === 'local'" class="space-y-3">
+                            <label class="block text-xs text-gray-500 font-bold">選擇影片檔案</label>
+                            <input type="file" accept="video/mp4,video/x-m4v,video/*" class="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                            <input type="text" placeholder="請輸入影片自訂標題..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 mt-2">
+                        </div>
+
+                        <div v-if="videoUploadType === 'youtube'" class="space-y-3">
+                            <label class="block text-xs text-gray-500 font-bold">貼上 YouTube 網址</label>
+                            <input type="url" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-red-500">
+                            <input type="text" placeholder="請輸入影片自訂標題..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-red-500 mt-2">
+                        </div>
+
+                        <button @click="showAddVideoModal = false" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-xl transition-all mt-4 text-sm">
+                            確認新增至清單
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code 預覽與列印版面 -->
+            <div v-if="showQRModal" class="fixed inset-0 bg-white z-[60] overflow-y-auto animate-[fadeIn_0.2s_ease-out] print:block">
+                <div class="max-w-6xl mx-auto p-6 md:p-10">
+                    <div class="flex justify-between items-center mb-8 border-b pb-4 print:hidden">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">座位 QR Code 產製結果</h2>
+                            <p class="text-sm text-gray-500">排版已對應教室配置 ({{seatingCols}} 行 × {{seatingRows}} 列)，請直接使用瀏覽器列印 (Ctrl+P)。</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button @click="window.print()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-indigo-700">
+                                <i class="fa-solid fa-print mr-1"></i> 開始列印
+                            </button>
+                            <button @click="showQRModal = false" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-300">
+                                關閉預覽
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div :style="{ gridTemplateColumns: `repeat(${seatingCols}, minmax(0, 1fr))` }" class="grid gap-4 print:gap-2">
+                        <div v-for="qr in mockStudents" :key="qr.seat" class="border-2 border-dashed border-gray-300 p-2 md:p-4 flex flex-col items-center justify-center rounded-xl bg-white page-break-inside-avoid aspect-square">
+                            <img :src="`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=HL_ROOM_A_${qr.seat}`" alt="QR Code" class="w-16 h-16 md:w-24 md:h-24 mb-2">
+                            <div class="text-sm md:text-lg font-black text-gray-800 tracking-wider">{{ qr.seat }}</div>
+                            <div class="text-[8px] md:text-[10px] text-gray-400 mt-0.5">HoloLens 綁定用</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
-
     </div>
 
     <script>
-        const { createApp, ref, onMounted } = Vue;
+        const { createApp, ref, computed, onMounted } = Vue;
+        
         createApp({
             setup() {
+                // 登入狀態
                 const isLoggedIn = ref(false);
                 const username = ref('');
                 const password = ref('');
-                const rememberMe = ref(false);
                 const showPassword = ref(false);
                 const loginError = ref('');
 
+                // UI 狀態
                 const isSidebarExpanded = ref(true); 
-                const currentTab = ref('single'); 
+                const currentTab = ref('single');
                 const isModalOpen = ref(false);
                 const modalData = ref({});
+                
+                // 動態標題
+                const pageTitle = computed(() => {
+                    const titles = { overview: '學生狀態總覽', single: '教室座位監控', videos: '影片教材管理', settings: '管理與系統設定' };
+                    return titles[currentTab.value] || 'HoloLens 系統';
+                });
+
+                // 座位表大小定義
+                const seatingCols = ref(6);
+                const seatingRows = ref(10); 
                 const mockStudents = ref([]);
 
+                // 【核心名冊池】：用來集中保存全班名冊，批次匯入的資料會推進這裡
+                const classRoster = ref([
+                    { id: '411313583', name: '黃冠誠', rewatch: 6, lag: 45, errors: 4, risk: '高' },
+                    { id: '411313606', name: '楊芯瑋', rewatch: 1, lag: 8,  errors: 0, risk: '正常' },
+                    { id: '411313787', name: '林昱旻', rewatch: 4, lag: 25, errors: 2, risk: '中' },
+                    { id: '411322930', name: '簡瑩瑩', rewatch: 0, lag: 5,  errors: 0, risk: '正常' },
+                    { id: '411314101', name: '陳建宏', rewatch: 0, lag: 0,  errors: 0, risk: '正常' },
+                    { id: '411314102', name: '林曉梅', rewatch: 0, lag: 0,  errors: 0, risk: '正常' }
+                ]);
+
+                // 計算屬性：自動篩選出「尚未安排座位」的學生名單
+                const availableStudents = computed(() => {
+                    return classRoster.value.filter(stu => !mockStudents.value.some(s => s.id === stu.id));
+                });
+
+                // 獲取學生的目前座位，若無則返回 '未安排'
+                const getStudentSeat = (id) => {
+                    const found = mockStudents.value.find(ms => ms.id === id);
+                    return found ? found.seat : '未安排';
+                };
+
+                // 動態獲取學生數據：若已入座則回傳座位表內最新的變動，若未入座則回傳基礎名冊欄位
+                const getStudentMetric = (id, field) => {
+                    const seated = mockStudents.value.find(ms => ms.id === id);
+                    if (seated && seated.name) {
+                        return seated[field];
+                    }
+                    const rostered = classRoster.value.find(r => r.id === id);
+                    return rostered ? rostered[field] : '';
+                };
+
+                // 影片管理資料
+                const videoList = ref([
+                    { id: 'v1', title: 'HoloLens 基本手勢操作教學', duration: '05:30', date: '2024-03-10', active: true, type: 'Local MP4' },
+                    { id: 'v2', title: 'Unity 空間投影原理與實作', duration: '12:15', date: '2024-03-15', active: true, type: 'YouTube' },
+                    { id: 'v3', title: '互動式 3D 模型除錯指南', duration: '08:40', date: '2024-04-02', active: false, type: 'Local MP4' }
+                ]);
+
+                // 設定區臨時變數
+                const tempCols = ref(6);
+                const tempRows = ref(10);
+                
+                // 指派功能變數
+                const showAssignModal = ref(false);
+                const assignSeatSelect = ref('Seat 1');
+                const selectedRosterId = ref('');
+                
+                // 影片上傳變數
+                const showAddVideoModal = ref(false);
+                const videoUploadType = ref('local');
+
+                const importText = ref('');
+                const importSuccess = ref(false);
+                const showQRModal = ref(false);
+
+                // 登入驗證
                 const handleLogin = () => {
                     if (username.value === 't001' && password.value === '123') {
                         loginError.value = '';
                         isLoggedIn.value = true;
-                        
-                        if (rememberMe.value) {
-                            localStorage.setItem('saved_username', username.value);
-                            localStorage.setItem('saved_password', password.value);
-                            localStorage.setItem('remember_me_check', 'true');
-                        } else {
-                            localStorage.removeItem('saved_username');
-                            localStorage.removeItem('saved_password');
-                            localStorage.removeItem('remember_me_check');
-                        }
                     } else {
-                        loginError.value = '登入失敗：帳號或密碼錯誤，請重新輸入！';
+                        loginError.value = '登入失敗：帳號或密碼錯誤！';
                         password.value = ''; 
                     }
                 };
+                const handleLogout = () => { isLoggedIn.value = false; };
 
-                const handleLogout = () => {
-                    isLoggedIn.value = false;
-                    if (!rememberMe.value) {
-                        username.value = '';
-                        password.value = '';
-                    }
-                    loginError.value = '';
-                };
-
-                onMounted(() => {
-                    const savedUser = localStorage.getItem('saved_username');
-                    const savedPass = localStorage.getItem('saved_password');
-                    const savedCheck = localStorage.getItem('remember_me_check');
-
-                    if (savedCheck === 'true' && savedUser && savedPass) {
-                        username.value = savedUser;
-                        password.value = savedPass;
-                        rememberMe.value = true;
-                    }
-
+                // 初始化或重組網格結構
+                const generateMockData = (rows, cols) => {
                     const list = [];
-                    const risks = ['正常', '正常', '中', '正常', '高', '正常']; 
-                    
-                    const coreTeam = [
-                        { id: '411313583', name: '黃冠誠', rewatch: 6, lag: 45, errors: 4, risk: '高' },
-                        { id: '411313606', name: '楊芯瑋', rewatch: 1, lag: 8,  errors: 0, risk: '正常' },
-                        { id: '411313787', name: '林昱旻', rewatch: 4, lag: 25, errors: 2, risk: '中' },
-                        { id: '411322930', name: '簡瑩瑩', rewatch: 0, lag: 5,  errors: 0, risk: '正常' }
-                    ];
+                    const totalSeats = rows * cols;
 
-                    for (let i = 1; i <= 60; i++) {
-                        if (i <= 4) {
-                            list.push({ seat: `Seat ${i}`, ...coreTeam[i-1] });
+                    for (let i = 1; i <= totalSeats; i++) {
+                        let seatStr = `Seat ${i}`;
+                        // 範例初始設定：將預設名冊前 4 名分配至前 4 個空位
+                        if(i <= 4 && classRoster.value[i-1]) {
+                            list.push({ seat: seatStr, ...classRoster.value[i-1] });
                         } else {
-                            const randomRisk = risks[Math.floor(Math.random() * risks.length)];
-                            let rewatch = Math.floor(Math.random() * 3);
-                            let lag = Math.floor(Math.random() * 15);
-                            let errors = Math.floor(Math.random() * 2);
-
-                            if (randomRisk === '高') { rewatch = 7; lag = 41; errors = 5; }
-                            if (randomRisk === '中') { rewatch = 4; lag = 24; errors = 2; }
-
-                            list.push({
-                                seat: `Seat ${i}`,
-                                id: `411314${100 + i}`,
-                                name: `學生 #${i}`,
-                                rewatch, lag, errors, risk: randomRisk
-                            });
+                            list.push({ seat: seatStr, id: '', name: '', rewatch: 0, lag: 0, errors: 0, risk: '' });
                         }
                     }
                     mockStudents.value = list;
+                };
+
+                onMounted(() => {
+                    generateMockData(seatingRows.value, seatingCols.value);
                 });
 
-                const openStudentModal = (student) => {
-                    modalData.value = student;
+                // 開啟詳細資料或指派選單
+                const openStudentModal = (item, isFromSeat = true) => {
+                    if (isFromSeat) {
+                        // 如果點擊的是座位表上的灰色空位
+                        if(!item.name) {
+                            assignSeatSelect.value = item.seat;
+                            selectedRosterId.value = '';
+                            showAssignModal.value = true;
+                            return;
+                        }
+                        modalData.value = { ...item };
+                    } else {
+                        // 如果是從「狀態總覽」點擊過來
+                        const seatStr = getStudentSeat(item.id);
+                        modalData.value = {
+                            ...item,
+                            seat: seatStr,
+                            risk: getStudentMetric(item.id, 'risk'),
+                            rewatch: getStudentMetric(item.id, 'rewatch'),
+                            lag: getStudentMetric(item.id, 'lag'),
+                            errors: getStudentMetric(item.id, 'errors')
+                        };
+                    }
                     isModalOpen.value = true;
                 };
 
+                // 將選取學生指派至指定座位
+                const assignFromRoster = () => {
+                    const targetSeat = mockStudents.value.find(s => s.seat === assignSeatSelect.value);
+                    const stuData = classRoster.value.find(r => r.id === selectedRosterId.value);
+                    
+                    if(targetSeat && stuData) {
+                        targetSeat.id = stuData.id;
+                        targetSeat.name = stuData.name;
+                        targetSeat.risk = stuData.risk || '正常';
+                        targetSeat.rewatch = stuData.rewatch || 0;
+                        targetSeat.lag = stuData.lag || 0;
+                        targetSeat.errors = stuData.errors || 0;
+                        
+                        showAssignModal.value = false;
+                    }
+                };
+
+                // 單一解除座位綁定
+                const unassignSeat = (seatId) => {
+                    const targetSeat = mockStudents.value.find(s => s.seat === seatId);
+                    if(targetSeat) {
+                        targetSeat.id = '';
+                        targetSeat.name = '';
+                        targetSeat.risk = '';
+                        targetSeat.rewatch = 0; targetSeat.lag = 0; targetSeat.errors = 0;
+                        isModalOpen.value = false; 
+                    }
+                };
+
+                // 一鍵清除所有座位安排（但不影響名冊池）
+                const clearAllSeats = () => {
+                    if(confirm('確定要一鍵清除所有座位的學生綁定嗎？全班名冊將保留，學生將回到待安排選單中。')) {
+                        mockStudents.value.forEach(s => {
+                            s.id = ''; s.name = ''; s.risk = ''; 
+                            s.rewatch = 0; s.lag = 0; s.errors = 0;
+                        });
+                    }
+                };
+
+                // 重新套用座位行列設定
+                const applySeatingConfig = () => {
+                    if(tempCols.value > 50) tempCols.value = 50;
+                    if(tempRows.value > 50) tempRows.value = 50;
+                    seatingCols.value = tempCols.value;
+                    seatingRows.value = tempRows.value;
+                    generateMockData(seatingRows.value, seatingCols.value);
+                    alert(`已成功套用！新座位表為 ${tempCols.value} 行 x ${tempRows.value} 列`);
+                };
+
+                // 【優化核心邏輯】：批次處理「學號,姓名」並動態推進名冊池
+                const processImport = () => {
+                    if(!importText.value.trim()) return;
+                    const lines = importText.value.split('\n');
+                    lines.forEach(line => {
+                        const parts = line.split(',');
+                        if(parts.length >= 2) {
+                            const [stuId, stuName] = parts;
+                            const idTrimmed = stuId.trim();
+                            const nameTrimmed = stuName.trim();
+                            if(idTrimmed && nameTrimmed) {
+                                // 防呆機制：若學號不存在於大名冊中，才執行載入
+                                if(!classRoster.value.some(r => r.id === idTrimmed)) {
+                                    classRoster.value.push({
+                                        id: idTrimmed,
+                                        name: nameTrimmed,
+                                        rewatch: 0,
+                                        lag: 0,
+                                        errors: 0,
+                                        risk: '正常' // 新進學生初始狀態為正常
+                                    });
+                                }
+                            }
+                        }
+                    });
+                    importSuccess.value = true;
+                    setTimeout(() => importSuccess.value = false, 3000);
+                    importText.value = ''; 
+                };
+
                 return {
-                    isLoggedIn,
-                    username,
-                    password,
-                    rememberMe,
-                    showPassword,
-                    loginError,
-                    handleLogin,
-                    handleLogout,
-                    isSidebarExpanded,
-                    currentTab,
-                    mockStudents,
-                    isModalOpen,
-                    modalData,
-                    openStudentModal
+                    isLoggedIn, username, password, showPassword, loginError,
+                    handleLogin, handleLogout, isSidebarExpanded, currentTab, pageTitle,
+                    mockStudents, isModalOpen, modalData, openStudentModal,
+                    
+                    classRoster, availableStudents, getStudentSeat, getStudentMetric,
+                    showAssignModal, assignSeatSelect, selectedRosterId, assignFromRoster,
+                    unassignSeat, clearAllSeats,
+                    
+                    videoList, showAddVideoModal, videoUploadType,
+                    
+                    seatingCols, seatingRows, tempCols, tempRows, applySeatingConfig,
+                    importText, importSuccess, processImport, showQRModal
                 };
             }
         }).mount('#app');
@@ -446,8 +769,15 @@
         }
         .animate-headShake { animation: headShake 0.6s ease-in-out; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media print {
+            .page-break-inside-avoid { page-break-inside: avoid; break-inside: avoid; }
+            body, #app, main { background: white !important; height: auto !important; overflow: visible !important; }
+            .print\:hidden { display: none !important; }
+            .print\:block { display: block !important; }
+            .fixed.inset-0 { position: absolute; left: 0; top: 0; }
         }
     </style>
 </body>
